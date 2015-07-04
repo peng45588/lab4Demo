@@ -14,22 +14,32 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by Dawnwords on 2015/5/23.
  */
-public class Invoker extends Messager implements Runnable {
+public class Invoker extends Messager{
 
 
-    private ConcurrentHashMap<String, ListResponseHandler<Lecture>> idHandlerMap;
+    private ConcurrentHashMap<String, ListResponseHandler> idHandlerMap;
     private int responsorCount;
-
-    public Invoker(int responsorCount) {
+    private static Invoker invoker = null;
+    HttpServletResponse response;
+    private Invoker(int responsorCount) {
         super(Parameter.TOPIC, Parameter.INVOKER_CONSUMER_GROUP, Parameter.INVOKER_PRODUCER_GROUP);
         this.responsorCount = responsorCount;
         this.idHandlerMap = new ConcurrentHashMap<>();
+    }
+    public static Invoker getInstance(){
+        if (invoker == null)
+            invoker = new Invoker(3);
+        return invoker;
     }
 
     @Override
@@ -40,62 +50,75 @@ public class Invoker extends Messager implements Runnable {
             log("response type error");
             return false;
         }
-        LectureResponse response = (LectureResponse) messageBody;
-        if (!idHandlerMap.containsKey(response.requestId)) {
+        LectureResponse ret = (LectureResponse) messageBody;
+        if (!idHandlerMap.containsKey(ret.requestId)) {
             log("request id not exists");
         } else {
-            idHandlerMap.get(response.requestId).addResponse(response.jsob);
+            idHandlerMap.get(ret.requestId).addResponse(ret.jsob);
+            PrintToHtml.PrintToHtml(this.response, ret.jsob.get(0));
         }
         return true;
     }
 
-    @Override
-    public void run() {
+    public void setUp(JSONObject jsob,HttpServletResponse response){
         start(Parameter.RESPONSE_TAG);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        while (true) {
-            String line;
-            try {
-                if ("stop".equals(line = reader.readLine())) {
-                    break;
-                } else {
-                    JSONObject jsob = new JSONObject(line);
-                    LectureRequest body = new LectureRequest(jsob);
-                    SendResult sendResult = sendMessage(Parameter.REQUEST_TAG, Parameter.INVOKER_KEY, body);
-                    //回调函数,用以得到返回值
-                    idHandlerMap.put(sendResult.getMsgId(), new Handler(responsorCount, sendResult.getMsgId()));
-                    log(String.format("[%s]%s", sendResult.getMsgId(), jsob));
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
+        this.response = response;
+        try {
+            if ("stop".equals(jsob.toString())) {
+
+            } else {
+                LectureRequest body = new LectureRequest(jsob);
+                SendResult sendResult = sendMessage(Parameter.REQUEST_TAG, Parameter.INVOKER_KEY, body);
+                //回调函数,用以得到返回值
+                idHandlerMap.put(sendResult.getMsgId(), new Handler(responsorCount, sendResult.getMsgId()));
+                log(String.format("[%s]%s", sendResult.getMsgId(), jsob));
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        stop();
     }
 
-    private class Handler extends ListResponseHandler<Lecture> {
+
+    private class Handler extends ListResponseHandler {
         Handler(int expectResponseCount, String messageId) {
             super(expectResponseCount, messageId);
         }
         //回调函数
         @Override
-        void enoughResponse(JSONObject jsob, String key) {
+        void enoughResponse(List<String> ret, String key) {
             String print = "";
 //            for (Lecture lecture : result) {
 //                print += lecture + "\n";
 //            }
-            Iterator it = jsob.keys();
-            while(it.hasNext()){
-                print += it.next().toString() + "\n";
+            for (int i=0;i<ret.size();i++) {
+                JSONObject jsob = null;
+                try {
+                    jsob = new JSONObject(ret.get(i));Iterator it = jsob.keys();
+                    while (it.hasNext()) {
+                        print += it.next().toString() + ",";
+                    }
+                    print += "\n";
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
             idHandlerMap.remove(key);
             log(String.format("enough Response:\n%s", print));
         }
     }
 
-    public static void main(String[] args) {
-        new Thread(new Invoker(3)).start();
+
+
+    private HttpServletRequest request = null;
+
+
+
+    public HttpServletRequest getRequest() {
+        return request;
+    }
+
+    public void setRequest(HttpServletRequest request) {
+        this.request = request;
     }
 }

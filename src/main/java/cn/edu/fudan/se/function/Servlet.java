@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class Servlet {
 
-    public static JSONObject addCourseInfo(JSONObject jsInput){
+    public static JSONObject addCourseInfo(JSONObject jsInput) {
         JSONObject jsOutput = new JSONObject();
         try {
             //TODO 代码写在这里
@@ -44,28 +44,29 @@ public class Servlet {
             DataAccessInterface<CourseInfo> dac = DACFactory.getInstance().createDAC(CourseInfo.class);
             //判断课程、时间地点、教师冲突、院系
             if (Judge.isCourse(courseId))//课程不存在
-                if (Judge.isTimeOrLocation(time,jsInput.getString("location")))//时间地点不冲突
-                    if (Judge.isTeacherTime(time,jsInput.getString("teacherName")))//教师时间不冲突
+                if (Judge.isTimeOrLocation(time, jsInput.getString("location")))//时间地点不冲突
+                    if (Judge.isTeacherTime(time, jsInput.getString("teacherName")))//教师时间不冲突
                         if (!Judge.isSchool(jsInput.getString("schoolName"))) {//院系存在
                             dac.beginTransaction();
                             dac.add(ci);
                             dac.commit();
                             jsOutput.put(Config.SUCCESS, true);
-                        }else{//院系不存在
-                            jsOutput.put(Config.SUCCESS,false);
-                            jsOutput.put(Config.FAILREASON,Config.SCHOOL_NOT_EXIST);
+                            jsOutput.put(Config.FAILREASON, "");
+                        } else {//院系不存在
+                            jsOutput.put(Config.SUCCESS, false);
+                            jsOutput.put(Config.FAILREASON, Config.SCHOOL_NOT_EXIST);
                         }
-                    else{//教师时间冲突
-                        jsOutput.put(Config.SUCCESS,false);
-                        jsOutput.put(Config.FAILREASON,Config.TEACHER_CONFLICT);
+                    else {//教师时间冲突
+                        jsOutput.put(Config.SUCCESS, false);
+                        jsOutput.put(Config.FAILREASON, Config.TEACHER_CONFLICT);
                     }
-                else{//时间地点冲突
-                    jsOutput.put(Config.SUCCESS,false);
-                    jsOutput.put(Config.FAILREASON,Config.TIME_LOCATION_CONFLICT);
+                else {//时间地点冲突
+                    jsOutput.put(Config.SUCCESS, false);
+                    jsOutput.put(Config.FAILREASON, Config.TIME_LOCATION_CONFLICT);
                 }
-            else{//课程已存在
-                jsOutput.put(Config.SUCCESS,false);
-                jsOutput.put(Config.FAILREASON,Config.COURSE_NUMBER_EXIST);
+            else {//课程已存在
+                jsOutput.put(Config.SUCCESS, false);
+                jsOutput.put(Config.FAILREASON, Config.COURSE_NUMBER_EXIST);
             }
 
         } catch (JSONException e) {
@@ -74,14 +75,14 @@ public class Servlet {
         return jsOutput;
     }
 
-    public static JSONObject addSchoolInfo(JSONObject jsInput){
+    public static JSONObject addSchoolInfo(JSONObject jsInput) {
         //TODO 代码写在这里
         JSONObject jsOutput = new JSONObject();
         try {
             SchoolInfo si = new SchoolInfo();
             si.setSchoolName(jsInput.getString("schoolName"));
             si.setCreditRequirement(jsInput.getInt("creditRequirement"));
-            if(Judge.isSchool(jsInput.getString("schoolName"))){//学院不存在
+            if (Judge.isSchool(jsInput.getString("schoolName"))) {//学院不存在
                 //加入dac
                 DataAccessInterface<SchoolInfo> dac = DACFactory.getInstance().createDAC(SchoolInfo.class);
 
@@ -89,7 +90,9 @@ public class Servlet {
                 dac.add(si);
                 dac.commit();
                 jsOutput.put(Config.SUCCESS, true);
-            }else{
+                jsOutput.put(Config.FAILREASON, "");
+
+            } else {
                 jsOutput.put(Config.SUCCESS, false);
                 jsOutput.put(Config.FAILREASON, Config.SCHOOL_EXIST);
             }
@@ -99,7 +102,7 @@ public class Servlet {
         return jsOutput;
     }
 
-    public static JSONObject addStudentInfo(JSONObject jsInput){
+    public static JSONObject addStudentInfo(JSONObject jsInput) {
         JSONObject jsOutput = new JSONObject();
         try {
             StudentInfo si = new StudentInfo();
@@ -109,20 +112,21 @@ public class Servlet {
             si.setSchoolName(jsInput.getString("schoolName"));
 
             //判断学号、学院
-            if (Judge.isStudent(jsInput.getString("studentId"))){//学号不存在
-                if (!Judge.isSchool(jsInput.getString("schoolName"))){//院系存在
+            if (Judge.isStudent(jsInput.getString("studentId"))) {//学号不存在
+                if (!Judge.isSchool(jsInput.getString("schoolName"))) {//院系存在
                     DataAccessInterface<StudentInfo> dac = DACFactory.getInstance().createDAC(StudentInfo.class);
                     dac.beginTransaction();
                     dac.add(si);
                     dac.commit();
                     jsOutput.put(Config.SUCCESS, true);
-                }else{
+                    jsOutput.put(Config.FAILREASON, "");
+                } else {
                     jsOutput.put(Config.SUCCESS, false);
                     jsOutput.put(Config.FAILREASON, Config.SCHOOL_NOT_EXIST);
                 }
-            }else{
-                jsOutput.put(Config.SUCCESS,false);
-                jsOutput.put(Config.FAILREASON,Config.STUDENT_NUMBER_EXIST);
+            } else {
+                jsOutput.put(Config.SUCCESS, false);
+                jsOutput.put(Config.FAILREASON, Config.STUDENT_NUMBER_EXIST);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,7 +134,7 @@ public class Servlet {
         return jsOutput;
     }
 
-    public static JSONObject queryCourseById(JSONObject jsInput){
+    public static JSONObject queryCourseById(JSONObject jsInput) {
         JSONObject jsOutput = new JSONObject();
 
         //TODO 代码写在这里
@@ -148,9 +152,9 @@ public class Servlet {
             for (CourseInfo s : dac.selectByCondition(condition))
                 jsonArray.put(new JSONObject(s));
             //课程信息不存在返回 null
-            if (jsonArray.length()==0)
+            if (jsonArray.length() == 0)
                 jsonArray = null;
-            jsOutput.put(Config.COURSE,jsonArray);
+            jsOutput.put(Config.COURSE, jsonArray);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -158,7 +162,7 @@ public class Servlet {
         return jsOutput;
     }
 
-    public static JSONObject queryCourseByTime(JSONObject jsInput){
+    public static JSONObject queryCourseByTime(JSONObject jsInput) {
         JSONObject jsOutput = new JSONObject();
         //TODO 代码写在这里
         try {
@@ -188,7 +192,7 @@ public class Servlet {
         return jsOutput;
     }
 
-    public static JSONObject querySchedule(JSONObject jsInput){
+    public static JSONObject querySchedule(JSONObject jsInput) {
         JSONObject jsOutput = new JSONObject();
         try {
             final String studentId = jsInput.getString("studentId");
@@ -221,7 +225,7 @@ public class Servlet {
         return jsOutput;
     }
 
-    public static JSONObject selectCourse(JSONObject jsInput){
+    public static JSONObject selectCourse(JSONObject jsInput) {
         JSONObject jsOutput = new JSONObject();
         try {
             //TODO 代码写在这里
@@ -229,15 +233,15 @@ public class Servlet {
             //TODO  突'|'选课人数已满'
             final String studentId = jsInput.getString("studentId");
             final String courseId = jsInput.getString("courseId");
-            if (!Judge.isStudent(studentId)){//学生存在
-                if (!Judge.isCourse(courseId)){//课程存在
-                    if (Judge.isSelectTimeOrLocation(studentId, courseId)){//选课时间地点不冲突
-                        if (Judge.isSelectFull(courseId)){//选课人数未满
-                            if (Judge.isStudentCredit(studentId)){//学生学分满
+            if (!Judge.isStudent(studentId)) {//学生存在
+                if (!Judge.isCourse(courseId)) {//课程存在
+                    if (Judge.isSelectTimeOrLocation(studentId, courseId)) {//选课时间地点不冲突
+                        if (Judge.isSelectFull(courseId)) {//选课人数未满
+                            if (Judge.isStudentCredit(studentId)) {//学生学分满
 
                                 //修改学生选课信息
                                 DataAccessInterface<StudentInfo> dac = DACFactory.getInstance().createDAC(StudentInfo.class);
-                                Condition<StudentInfo> condition= new Condition<StudentInfo>(){
+                                Condition<StudentInfo> condition = new Condition<StudentInfo>() {
                                     @Override
                                     public boolean assertBean(StudentInfo studentInfo) {
                                         return studentInfo.getStudentId().equals(studentId);
@@ -255,7 +259,7 @@ public class Servlet {
 
                                 //修改课程余量
                                 DataAccessInterface<CourseInfo> dacCou = DACFactory.getInstance().createDAC(CourseInfo.class);
-                                Condition<CourseInfo> conditionCou= new Condition<CourseInfo>(){
+                                Condition<CourseInfo> conditionCou = new Condition<CourseInfo>() {
                                     @Override
                                     public boolean assertBean(CourseInfo courseInfo) {
                                         return courseInfo.getCourseId().equals(courseId);
@@ -264,52 +268,53 @@ public class Servlet {
                                 BeanSetter<CourseInfo> setterCou = new BeanSetter<CourseInfo>() {
                                     @Override
                                     public void set(CourseInfo courseInfo) {
-                                        int surplus = courseInfo.getSurplus()-1;
+                                        int surplus = courseInfo.getSurplus() - 1;
                                         courseInfo.setSurplus(surplus);
                                     }
                                 };
-                                dacCou.updateByCondition(conditionCou,setterCou);
-                                jsOutput.put(Config.SUCCESS,true);
-                            }else {
-                                jsOutput.put(Config.SUCCESS,false);
-                                jsOutput.put(Config.FAILREASON,Config.CREDIT_FULL);
+                                dacCou.updateByCondition(conditionCou, setterCou);
+                                jsOutput.put(Config.SUCCESS, true);
+                                jsOutput.put(Config.FAILREASON,"");
+                            } else {
+                                jsOutput.put(Config.SUCCESS, false);
+                                jsOutput.put(Config.FAILREASON, Config.CREDIT_FULL);
                             }
-                        }else {
-                            jsOutput.put(Config.SUCCESS,false);
-                            jsOutput.put(Config.FAILREASON,Config.SELECT_FULL);
+                        } else {
+                            jsOutput.put(Config.SUCCESS, false);
+                            jsOutput.put(Config.FAILREASON, Config.SELECT_FULL);
                         }
-                    }else {
-                        jsOutput.put(Config.SUCCESS,false);
-                        jsOutput.put(Config.FAILREASON,Config.SELECT_TIME_LOCATION_CONFLICT);
+                    } else {
+                        jsOutput.put(Config.SUCCESS, false);
+                        jsOutput.put(Config.FAILREASON, Config.SELECT_TIME_LOCATION_CONFLICT);
                     }
-                }else {
-                    jsOutput.put(Config.SUCCESS,false);
-                    jsOutput.put(Config.FAILREASON,Config.COURSE_NOT_EXIST);
+                } else {
+                    jsOutput.put(Config.SUCCESS, false);
+                    jsOutput.put(Config.FAILREASON, Config.COURSE_NOT_EXIST);
                 }
-            }else {
-                jsOutput.put(Config.SUCCESS,false);
-                jsOutput.put(Config.FAILREASON,Config.STUDENT_NOT_EXIST);
+            } else {
+                jsOutput.put(Config.SUCCESS, false);
+                jsOutput.put(Config.FAILREASON, Config.STUDENT_NOT_EXIST);
             }
-        }catch (Exception e){
-e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return jsOutput;
     }
 
-    public static JSONObject dropCourse(JSONObject jsInput){
+    public static JSONObject dropCourse(JSONObject jsInput) {
         JSONObject jsOutput = new JSONObject();
         try {
             //TODO 代码写在这里
             //TODO 判断 学号不存在、课程不存在、未选
             final String studentId = jsInput.getString("studentId");
             final String courseId = jsInput.getString("courseId");
-            if (!Judge.isStudent(studentId)){//学号存在
-                if (!Judge.isCourse(courseId)){//课程存在
-                    if (Judge.isSelect(studentId,courseId)){//学生已选这门课
+            if (!Judge.isStudent(studentId)) {//学号存在
+                if (!Judge.isCourse(courseId)) {//课程存在
+                    if (Judge.isSelect(studentId, courseId)) {//学生已选这门课
 
                         //修改学生选课信息
                         DataAccessInterface<StudentInfo> dac = DACFactory.getInstance().createDAC(StudentInfo.class);
-                        Condition<StudentInfo> condition= new Condition<StudentInfo>(){
+                        Condition<StudentInfo> condition = new Condition<StudentInfo>() {
                             @Override
                             public boolean assertBean(StudentInfo studentInfo) {
                                 return studentInfo.getStudentId().equals(studentId);
@@ -327,7 +332,7 @@ e.printStackTrace();
 
                         //修改课程余量
                         DataAccessInterface<CourseInfo> dacCou = DACFactory.getInstance().createDAC(CourseInfo.class);
-                        Condition<CourseInfo> conditionCou= new Condition<CourseInfo>(){
+                        Condition<CourseInfo> conditionCou = new Condition<CourseInfo>() {
                             @Override
                             public boolean assertBean(CourseInfo courseInfo) {
                                 return courseInfo.getCourseId().equals(courseId);
@@ -336,32 +341,33 @@ e.printStackTrace();
                         BeanSetter<CourseInfo> setterCou = new BeanSetter<CourseInfo>() {
                             @Override
                             public void set(CourseInfo courseInfo) {
-                                int surplus = courseInfo.getSurplus()+1;
+                                int surplus = courseInfo.getSurplus() + 1;
                                 courseInfo.setSurplus(surplus);
                             }
                         };
                         dacCou.updateByCondition(conditionCou, setterCou);
 
-                        jsOutput.put(Config.SUCCESS,true);
-                    }else {
-                        jsOutput.put(Config.SUCCESS,false);
-                        jsOutput.put(Config.FAILREASON,Config.STUDENT_NOT_SELECT);
+                        jsOutput.put(Config.SUCCESS, true);
+                        jsOutput.put(Config.FAILREASON,"");
+                    } else {
+                        jsOutput.put(Config.SUCCESS, false);
+                        jsOutput.put(Config.FAILREASON, Config.STUDENT_NOT_SELECT);
                     }
-                }else {
-                    jsOutput.put(Config.SUCCESS,false);
-                    jsOutput.put(Config.FAILREASON,Config.COURSE_NOT_EXIST);
+                } else {
+                    jsOutput.put(Config.SUCCESS, false);
+                    jsOutput.put(Config.FAILREASON, Config.COURSE_NOT_EXIST);
                 }
-            }else {
-                jsOutput.put(Config.SUCCESS,false);
-                jsOutput.put(Config.FAILREASON,Config.STUDENT_NOT_EXIST);
+            } else {
+                jsOutput.put(Config.SUCCESS, false);
+                jsOutput.put(Config.FAILREASON, Config.STUDENT_NOT_EXIST);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return jsOutput;
     }
 
-    public static void clearData(){
+    public static void clearData() {
 
     }
 }

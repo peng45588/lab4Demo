@@ -12,12 +12,12 @@ import java.util.List;
  */
 public class LectureResponse implements Serializable {
     public final String requestId;
-    public final String jsob;
+    public final List<String> jsob;
 
 
-    public LectureResponse(String requestId, JSONObject jsob) {
+    public LectureResponse(String requestId, List<String> jsob) {
         this.requestId = requestId;
-        this.jsob = jsob.toString();
+        this.jsob = jsob;
     }
 
     @Override

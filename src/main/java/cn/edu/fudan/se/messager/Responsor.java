@@ -12,7 +12,9 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Dawnwords on 2015/5/23.
@@ -33,16 +35,21 @@ public class Responsor extends Messager implements Runnable{
             e.printStackTrace();
             return false;
         }
-        //TODO 从invoke接受到,改成专有代码 传来的值为messagebody
+        //TODO 从invoke接受到,改成专有代码 传来的值为messagebody,messagebody 可能为多个request?,
         LectureRequest lectureRequest = (LectureRequest) messageBody;
         try {
             JSONObject jsonObject = new JSONObject(lectureRequest.id);
             JSONObject jsob = Servlet.addSchoolInfo(jsonObject);
-            LectureResponse response = new LectureResponse(messageId, jsob);
+            List<String> ret = new ArrayList<String>();
+            ret.add(jsob.toString());
+            LectureResponse response = new LectureResponse(messageId, ret);
             sendMessage(Parameter.RESPONSE_TAG, Parameter.RESPONSOR_KEY, response);
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
+
+
+
         }
 
         return true;
