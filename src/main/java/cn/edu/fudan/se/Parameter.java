@@ -13,6 +13,7 @@ public class Parameter {
     public static final String RESPONSOR_PRODUCER_GROUP = "responsor-pta";
     public static final String RESPONSOR_KEY = "response";
 
-    public static final String RESPONSE_TAG = "lecture_response";
-    public static final String REQUEST_TAG = "lecture_request";
+    public static final String RESPONSE_TAG = "all_response";
+    public static final String REQUEST_TAG = "all_request";
+
 }

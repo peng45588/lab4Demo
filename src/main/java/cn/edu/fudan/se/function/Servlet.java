@@ -166,14 +166,16 @@ public class Servlet {
         JSONObject jsOutput = new JSONObject();
         //TODO 代码写在这里
         try {
-            final Time time = (Time) jsInput.get("time");
+            final Time time = new Time();
+            time.setPeriod(jsInput.getJSONObject("time").getInt("period"));
+            time.setWeekday(jsInput.getJSONObject("time").getInt("weekday"));
             DataAccessInterface<CourseInfo> dac = DACFactory.getInstance().createDAC(CourseInfo.class);
             Condition<CourseInfo> condition = new Condition<CourseInfo>() {
                 @Override
                 public boolean assertBean(CourseInfo courseInfo) {
                     if (courseInfo.getTime().getPeriod() == time.getPeriod() &&
                             courseInfo.getTime().getWeekday() == time.getWeekday())
-                        return courseInfo.getTime().equals(time);
+                        return true;
                     else
                         return false;
                 }
@@ -181,6 +183,7 @@ public class Servlet {
 
             //得到所有course
             JSONArray jsonArray = new JSONArray();
+            List list = dac.selectByCondition(condition);
             for (CourseInfo s : dac.selectByCondition(condition))
                 jsonArray.put(new JSONObject(s));
 

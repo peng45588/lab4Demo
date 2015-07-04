@@ -2,7 +2,6 @@ package cn.edu.fudan.se.messager;
 
 
 import cn.edu.fudan.se.Parameter;
-import cn.edu.fudan.se.bean.Lecture;
 import cn.edu.fudan.se.bean.LectureRequest;
 import cn.edu.fudan.se.bean.LectureResponse;
 import cn.edu.fudan.se.function.Servlet;
@@ -13,16 +12,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by Dawnwords on 2015/5/23.
  */
-public class Responsor extends Messager implements Runnable{
+public class ResponsorHost1 extends Messager implements Runnable{
     private int responsorId;
 
-    public Responsor(int responsorId) {
+    public ResponsorHost1(int responsorId) {
         super(Parameter.TOPIC, Parameter.RESPONSOR_CONSUMER_GROUP, Parameter.RESPONSOR_PRODUCER_GROUP);
         this.responsorId = responsorId;
     }
@@ -72,6 +70,6 @@ public class Responsor extends Messager implements Runnable{
     }
 
     public static void main(String[] args) {
-        new Thread(new Responsor((int) (System.currentTimeMillis()%1000))).start();
+        new Thread(new ResponsorHost1((int) (System.currentTimeMillis()%1000))).start();
     }
 }

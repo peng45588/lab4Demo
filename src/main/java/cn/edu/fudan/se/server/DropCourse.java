@@ -1,8 +1,10 @@
-package cn.edu.fudan.se.messager;/**
+package cn.edu.fudan.se.server;/**
  * Created by snow on 15-6-19.
  */
 
 
+import cn.edu.fudan.se.messager.Invoker;
+import cn.edu.fudan.se.messager.PrintToHtml;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
@@ -13,10 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class AddCourseInfo extends ActionSupport implements ServletResponseAware,ServletRequestAware {
+public class DropCourse extends ActionSupport implements ServletResponseAware,ServletRequestAware {
     private static final long serialVersionUID = 1L;
     private HttpServletResponse response;
     private HttpServletRequest request;
@@ -31,21 +32,13 @@ public class AddCourseInfo extends ActionSupport implements ServletResponseAware
                 Invoker invoker = Invoker.getInstance();
                 invoker.setUp(jsob, response);
 
-                //PrintToHtml.PrintToHtml(response, ret);
                 line = in.readLine();
             }
         } catch (JSONException e) {
             //e.printStackTrace();
         } catch (IOException e) {
-            //e.printStackTrace();f
+            //e.printStackTrace();
         }
-
-
-//        JSONObject jsob = Servlet.addCourseInfo(course);
-//
-//        ret = jsob.toString();
-        //PrintToHtml.PrintToHtml(response, ret+"cuola");
-
         while (!PrintToHtml.isPrint()){//未打印:
 
         }

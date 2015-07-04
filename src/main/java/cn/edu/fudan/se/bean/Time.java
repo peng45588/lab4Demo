@@ -1,9 +1,12 @@
 package cn.edu.fudan.se.bean;
 
+
+import java.io.Serializable;
+
 /**
  * Created by snow on 15-6-20.
  */
-public class Time {
+public class Time implements Serializable {
     private int weekday;
     private int period;
 

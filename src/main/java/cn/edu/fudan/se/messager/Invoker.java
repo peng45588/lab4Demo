@@ -1,20 +1,14 @@
 package cn.edu.fudan.se.messager;
 
 import cn.edu.fudan.se.Parameter;
-import cn.edu.fudan.se.bean.Lecture;
 import cn.edu.fudan.se.bean.LectureRequest;
 import cn.edu.fudan.se.bean.LectureResponse;
 import com.alibaba.rocketmq.client.producer.SendResult;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,16 +25,16 @@ public class Invoker extends Messager{
     private int responsorCount;
     private static Invoker invoker = null;
     HttpServletResponse response;
-    private Invoker(int responsorCount) {
+    public Invoker(int responsorCount) {
         super(Parameter.TOPIC, Parameter.INVOKER_CONSUMER_GROUP, Parameter.INVOKER_PRODUCER_GROUP);
         this.responsorCount = responsorCount;
         this.idHandlerMap = new ConcurrentHashMap<>();
     }
-    public static Invoker getInstance(){
-        if (invoker == null)
-            invoker = new Invoker(3);
-        return invoker;
-    }
+//    public static Invoker getInstance(){
+//        if (invoker == null)
+//            invoker = new Invoker(3);
+//        return invoker;
+//    }
 
     @Override
     protected boolean onReceiveMessage(String messageId, Object messageBody) {
@@ -60,15 +54,15 @@ public class Invoker extends Messager{
         return true;
     }
 
-    public void setUp(JSONObject jsob,HttpServletResponse response){
-        start(Parameter.RESPONSE_TAG);
+    public void setUp(JSONObject jsob,HttpServletResponse response,String tagResponse,String tagRequest){
+        start(tagResponse);
         this.response = response;
         try {
             if ("stop".equals(jsob.toString())) {
 
             } else {
                 LectureRequest body = new LectureRequest(jsob);
-                SendResult sendResult = sendMessage(Parameter.REQUEST_TAG, Parameter.INVOKER_KEY, body);
+                SendResult sendResult = sendMessage(tagRequest, Parameter.INVOKER_KEY, body);
                 //回调函数,用以得到返回值
                 idHandlerMap.put(sendResult.getMsgId(), new Handler(responsorCount, sendResult.getMsgId()));
                 log(String.format("[%s]%s", sendResult.getMsgId(), jsob));
