@@ -3,6 +3,9 @@ package cn.edu.fudan.se.server;/**
  */
 
 
+import cn.edu.fudan.se.Parameter;
+import cn.edu.fudan.se.bean.Time;
+import cn.edu.fudan.se.function.HashUtil;
 import cn.edu.fudan.se.messager.Invoker;
 import cn.edu.fudan.se.messager.PrintToHtml;
 import com.opensymphony.xwork2.ActionSupport;
@@ -29,8 +32,14 @@ public class QueryCourseByTime extends ActionSupport implements ServletResponseA
             String line = in.readLine();
             while (line!=null){
                 JSONObject jsob = new JSONObject(line);
-                Invoker invoker = Invoker.getInstance();
-                invoker.setUp(jsob, response);
+                JSONObject JSONTime = jsob.getJSONObject("time");
+                Time time = new Time();
+                time.setWeekday(JSONTime.getInt("weekday"));
+                time.setPeriod(JSONTime.getInt("period"));
+                Invoker invoker = new Invoker(4);
+                invoker.setUp(jsob, response,
+                        Parameter.RESPONSE_TAG_COURSE+ HashUtil.courseHash(time)+"||"+Parameter.RESPONSE_TAG_QUERY_BY_TIME,
+                        Parameter.REQUEST_TAG_COURSE+ HashUtil.courseHash(time)+"||"+Parameter.REQUEST_TAG_QUERY_BY_TIME);
 
                 line = in.readLine();
             }

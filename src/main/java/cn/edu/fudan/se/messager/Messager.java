@@ -50,10 +50,11 @@ public abstract class Messager {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext context) {
                 MessageExt message = list.get(0);
+                String tag = message.getTags();
                 String messageId = message.getMsgId();
                 Serializable messageBody = bytes2Bean(message.getBody());
                 log("[receiveMessage]id:" + messageId + " body:" + messageBody);
-                return onReceiveMessage(messageId, messageBody) ?
+                return onReceiveMessage(messageId, messageBody,tag) ?
                         ConsumeConcurrentlyStatus.CONSUME_SUCCESS :
                         ConsumeConcurrentlyStatus.RECONSUME_LATER;
             }
@@ -101,7 +102,7 @@ public abstract class Messager {
         return result;
     }
 
-    protected abstract boolean onReceiveMessage(String messageId, Object messageBody);
+    protected abstract boolean onReceiveMessage(String messageId, Object messageBody,String tag);
 
     protected void log(String message) {
         System.out.printf("[%tT]%s\n", new Date(), message);

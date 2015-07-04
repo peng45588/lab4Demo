@@ -371,6 +371,11 @@ public class Servlet {
     }
 
     public static void clearData() {
-
+        DataAccessInterface<StudentInfo> studentDAC = DACFactory.getInstance().createDAC(StudentInfo.class);
+        DataAccessInterface<CourseInfo> courseDAC = DACFactory.getInstance().createDAC(CourseInfo.class);
+        DataAccessInterface<SchoolInfo> schoolDAC = DACFactory.getInstance().createDAC(SchoolInfo.class);
+        studentDAC.deleteByCondition(studentInfo -> true);
+        courseDAC.deleteByCondition(courseInfo -> true);
+        schoolDAC.deleteByCondition(schoolInfo -> true);
     }
 }

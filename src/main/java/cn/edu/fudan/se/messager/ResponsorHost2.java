@@ -26,7 +26,7 @@ public class ResponsorHost2 extends Messager implements Runnable{
     }
 
     @Override
-    protected boolean onReceiveMessage(String messageId, Object messageBody) {
+    protected boolean onReceiveMessage(String messageId, Object messageBody,String tag) {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -41,7 +41,7 @@ public class ResponsorHost2 extends Messager implements Runnable{
             List<String> ret = new ArrayList<String>();
             ret.add(jsob.toString());
             LectureResponse response = new LectureResponse(messageId, ret);
-            sendMessage(Parameter.RESPONSE_TAG, Parameter.RESPONSOR_KEY, response);
+            sendMessage(Parameter.RESPONSE_TAG_COURSE+2, Parameter.RESPONSOR_KEY, response);
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
@@ -55,7 +55,7 @@ public class ResponsorHost2 extends Messager implements Runnable{
 
     @Override
     public void run() {
-        start(Parameter.REQUEST_TAG);
+        start(Parameter.REQUEST_TAG_COURSE+2);
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
             try {

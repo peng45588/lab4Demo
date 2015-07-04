@@ -37,7 +37,7 @@ public class Invoker extends Messager{
 //    }
 
     @Override
-    protected boolean onReceiveMessage(String messageId, Object messageBody) {
+    protected boolean onReceiveMessage(String messageId, Object messageBody,String tag) {
         //TODO 从responsor接受到的返回值,改成专有的类 传回来的值为messagebody
         
         if (!(messageBody instanceof LectureResponse)) {
@@ -102,7 +102,10 @@ public class Invoker extends Messager{
         }
     }
 
-
+    @Override
+    public void stop() {
+        super.stop();
+    }
 
     private HttpServletRequest request = null;
 
