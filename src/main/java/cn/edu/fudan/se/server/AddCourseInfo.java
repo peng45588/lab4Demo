@@ -32,14 +32,15 @@ public class AddCourseInfo extends ActionSupport implements ServletResponseAware
             BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
             String line = in.readLine();
             while (line!=null){
-                JSONObject jsob = new JSONObject(line);
+                JSONObject jsob = new JSONObject(line).getJSONObject("course");
                 // 将课程存于本地,方便以后的查询,获得课程时间
                 Time time = CourseBackUp.SaveCourse(jsob);
                 Invoker invoker = new Invoker(4);
 
                 invoker.setUp(jsob, response,
-                        Parameter.RESPONSE_TAG_COURSE+ HashUtil.courseHash(time)+"||"+Parameter.RESPONSE_TAG_COURSE_INFO,
-                        Parameter.REQUEST_TAG_COURSE+ HashUtil.courseHash(time)+"||"+Parameter.REQUEST_TAG_COURSE_INFO);
+                        Parameter.RESPONSE_TAG_COURSE + HashUtil.courseHash(time),
+                        Parameter.REQUEST_TAG_COURSE + HashUtil.courseHash(time),
+                        Parameter.REQUEST_COURSE_INFO);
 
                 line = in.readLine();
             }

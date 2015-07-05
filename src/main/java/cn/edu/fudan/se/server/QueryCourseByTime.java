@@ -38,8 +38,9 @@ public class QueryCourseByTime extends ActionSupport implements ServletResponseA
                 time.setPeriod(JSONTime.getInt("period"));
                 Invoker invoker = new Invoker(4);
                 invoker.setUp(jsob, response,
-                        Parameter.RESPONSE_TAG_COURSE+ HashUtil.courseHash(time)+"||"+Parameter.RESPONSE_TAG_QUERY_BY_TIME,
-                        Parameter.REQUEST_TAG_COURSE+ HashUtil.courseHash(time)+"||"+Parameter.REQUEST_TAG_QUERY_BY_TIME);
+                        Parameter.RESPONSE_TAG_COURSE+ HashUtil.courseHash(time),
+                        Parameter.REQUEST_TAG_COURSE+ HashUtil.courseHash(time),
+                        Parameter.REQUEST_QUERY_BY_TIME);
 
                 line = in.readLine();
             }

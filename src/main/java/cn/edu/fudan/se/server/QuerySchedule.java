@@ -4,8 +4,6 @@ package cn.edu.fudan.se.server;/**
 
 
 import cn.edu.fudan.se.Parameter;
-import cn.edu.fudan.se.bean.CourseInfo;
-import cn.edu.fudan.se.function.HashUtil;
 import cn.edu.fudan.se.messager.Invoker;
 import cn.edu.fudan.se.messager.PrintToHtml;
 import com.opensymphony.xwork2.ActionSupport;
@@ -34,7 +32,10 @@ public class QuerySchedule extends ActionSupport implements ServletResponseAware
                 JSONObject jsob = new JSONObject(line);
                 Invoker invoker = new Invoker(4);
 
-                invoker.setUp(jsob, response, Parameter.REQUEST_TAG_SCHEDULE,Parameter.REQUEST_TAG_SCHEDULE);
+                invoker.setUp(jsob, response,
+                        Parameter.REQUEST_TAG_SCHEDULE,
+                        Parameter.REQUEST_TAG_SCHEDULE,
+                        Parameter.DEFAULT);
 
                 line = in.readLine();
             }

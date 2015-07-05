@@ -38,8 +38,9 @@ public class SelectCourse extends ActionSupport implements ServletResponseAware,
                 //根据选课号获得课程时间
                 Time time = CourseBackUp.getTime(jsob.getString("courseId"));
                 invoker.setUp(jsob, response,
-                        Parameter.RESPONSE_TAG_COURSE + HashUtil.courseHash(time) + "||" + Parameter.RESPONSE_TAG_SELECT,
-                        Parameter.REQUEST_TAG_COURSE + HashUtil.courseHash(time) + "||" + Parameter.REQUEST_TAG_SELECT);
+                        Parameter.RESPONSE_TAG_COURSE + HashUtil.courseHash(time),
+                        Parameter.REQUEST_TAG_COURSE + HashUtil.courseHash(time),
+                        Parameter.REQUEST_SELECT);
 
                 line = in.readLine();
             }

@@ -54,14 +54,14 @@ public class Invoker extends Messager{
         return true;
     }
 
-    public void setUp(JSONObject jsob,HttpServletResponse response,String tagResponse,String tagRequest){
+    public void setUp(JSONObject jsob,HttpServletResponse response,String tagResponse,String tagRequest,int functionTag){
         start(tagResponse);
         this.response = response;
         try {
             if ("stop".equals(jsob.toString())) {
 
             } else {
-                MessageRequest body = new MessageRequest(jsob);
+                MessageRequest body = new MessageRequest(jsob,functionTag);
                 SendResult sendResult = sendMessage(tagRequest, Parameter.INVOKER_KEY, body);
                 //回调函数,用以得到返回值
                 idHandlerMap.put(sendResult.getMsgId(), new Handler(responsorCount, sendResult.getMsgId()));
@@ -81,9 +81,6 @@ public class Invoker extends Messager{
         @Override
         void enoughResponse(List<String> ret, String key) {
             String print = "";
-//            for (Lecture lecture : result) {
-//                print += lecture + "\n";
-//            }
             for (int i=0;i<ret.size();i++) {
                 JSONObject jsob = null;
                 try {

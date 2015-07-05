@@ -31,7 +31,10 @@ public class AddStudentInfo extends ActionSupport implements ServletResponseAwar
             while (line!=null){
                 JSONObject jsob = new JSONObject(line);
                 Invoker invoker = new Invoker(4);
-                invoker.setUp(jsob, response,Parameter.RESPONSE_TAG_STUDENT,Parameter.REQUEST_TAG_STUDENT);
+                invoker.setUp(jsob, response,
+                        Parameter.RESPONSE_TAG_STUDENT,
+                        Parameter.REQUEST_TAG_STUDENT,
+                        Parameter.DEFAULT);
 
                 line = in.readLine();
             }

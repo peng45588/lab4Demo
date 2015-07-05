@@ -18,8 +18,9 @@ public class Judge {
     final static DataAccessInterface<SchoolInfo> dacSch = DACFactory.getInstance().createDAC(SchoolInfo.class);
     final static DataAccessInterface<StudentInfo> dacStu = DACFactory.getInstance().createDAC(StudentInfo.class);
     final static DataAccessInterface<CourseInfo> dacCou = DACFactory.getInstance().createDAC(CourseInfo.class);
+
     //  学院不存在 不存在：true
-    public static boolean isSchool(final String schoolName){
+    public static boolean isSchool(final String schoolName) {
 
         Condition<SchoolInfo> conditionSch = new Condition<SchoolInfo>() {
             @Override
@@ -35,7 +36,7 @@ public class Judge {
     }
 
     //  学生不存在 不存在：true
-    public static boolean isStudent(final String studentId){
+    public static boolean isStudent(final String studentId) {
         Condition<StudentInfo> conditionStu = new Condition<StudentInfo>() {
             @Override
             public boolean assertBean(StudentInfo studentInfo) {
@@ -50,7 +51,7 @@ public class Judge {
     }
 
     //  课程不存在 不存在：true
-    public static boolean isCourse(final String courseId){
+    public static boolean isCourse(final String courseId) {
         Condition<CourseInfo> conditionCou = new Condition<CourseInfo>() {
             @Override
             public boolean assertBean(CourseInfo courseInfo) {
@@ -65,46 +66,46 @@ public class Judge {
     }
 
     //录入课程  时间地点唯一 不唯一（冲突）：false
-    public static boolean isTimeOrLocation(final Time time, final String location){
+    public static boolean isTimeOrLocation(final Time time, final String location) {
         //选择所有课程
         Condition<CourseInfo> conditionCou = new Condition<CourseInfo>() {
             @Override
             public boolean assertBean(CourseInfo courseInfo) {
-                if(courseInfo.getTime().getWeekday()==time.getWeekday()&&
-                        courseInfo.getTime().getPeriod()==time.getPeriod())
+                if (courseInfo.getTime().getWeekday() == time.getWeekday() &&
+                        courseInfo.getTime().getPeriod() == time.getPeriod())
                     if (courseInfo.getLocation().equals(location))
                         return true;
                 return false;
             }
         };
         List list = dacCou.selectByCondition(conditionCou);
-        if (list.size()==0)
+        if (list.size() == 0)
             return true;
         else
             return false;
     }
 
     //录入课程 教师时间是否可选  不可选（冲突）: false
-    public static boolean isTeacherTime(final Time time, final String teacherName){
+    public static boolean isTeacherTime(final Time time, final String teacherName) {
         Condition<CourseInfo> conditionCou = new Condition<CourseInfo>() {
             @Override
             public boolean assertBean(CourseInfo courseInfo) {
-                if(courseInfo.getTime().getWeekday()==time.getWeekday()&&
-                        courseInfo.getTime().getPeriod()==time.getPeriod())
+                if (courseInfo.getTime().getWeekday() == time.getWeekday() &&
+                        courseInfo.getTime().getPeriod() == time.getPeriod())
                     if (courseInfo.getTeacherName().equals(teacherName))
                         return true;
                 return false;
             }
         };
         List list = dacCou.selectByCondition(conditionCou);
-        if (list.size()==0)
+        if (list.size() == 0)
             return true;
         else
             return false;
     }
 
     //录入学生：学号唯一  不唯一（冲突）：false
-    public static boolean isStudentId(final String studentId){
+    public static boolean isStudentId(final String studentId) {
         Condition<StudentInfo> conditionStu = new Condition<StudentInfo>() {
             @Override
             public boolean assertBean(StudentInfo studentInfo) {
@@ -114,14 +115,14 @@ public class Judge {
             }
         };
         List list = dacStu.selectByCondition(conditionStu);
-        if (list.size()==0)
+        if (list.size() == 0)
             return true;
         else
             return false;
     }
 
     //选课   时间地点是否唯一 冲突：false
-    public static boolean isSelectTimeOrLocation(final String studentId, final String courseId){
+    public static boolean isSelectTimeOrLocation(final String studentId, final String courseId) {
         Condition<StudentInfo> conditionStu = new Condition<StudentInfo>() {
             @Override
             public boolean assertBean(StudentInfo studentInfo) {
@@ -131,7 +132,7 @@ public class Judge {
         List<StudentInfo> list = dacStu.selectByCondition(conditionStu);
         final List<String> stuCourseId = list.get(0).getCourseId();
 
-        //获得学生已选课程
+        //TODO 获得学生已选课程（新的設計是否會影響）
         Condition<CourseInfo> conditionCou = new Condition<CourseInfo>() {
             @Override
             public boolean assertBean(CourseInfo courseInfo) {
@@ -151,22 +152,22 @@ public class Judge {
         };
         CourseInfo course = (CourseInfo) dacCou.selectByCondition(conditionCou);
         //判断时间地点是否冲突
-        for (int i=0;i<listCou.size();i++) {
-            if (listCou.get(i).getLocation().equals(course.getLocation()))
-                if (listCou.get(i).getTime().getPeriod()==course.getTime().getPeriod()&&
-                        listCou.get(i).getTime().getWeekday()==course.getTime().getWeekday())
-                    return false;
+        for (int i = 0; i < listCou.size(); i++) {
+            //if (listCou.get(i).getLocation().equals(course.getLocation()))
+            if (listCou.get(i).getTime().getPeriod() == course.getTime().getPeriod() &&
+                    listCou.get(i).getTime().getWeekday() == course.getTime().getWeekday())
+                return false;
         }
         return true;
     }
 
     //TODO 学分   已满 false
-    public static boolean isStudentCredit(String studentId){
+    public static boolean isStudentCredit(String studentId) {
         return true;
     }
 
     // 选课人数已满 未满：true
-    public static boolean isSelectFull(final String courseId){
+    public static boolean isSelectFull(final String courseId) {
         Condition<CourseInfo> conditionCou = new Condition<CourseInfo>() {
             @Override
             public boolean assertBean(CourseInfo courseInfo) {
@@ -174,13 +175,13 @@ public class Judge {
             }
         };
         List<CourseInfo> list = dacCou.selectByCondition(conditionCou);
-        if (list.get(0).getSurplus()>0)
+        if (list.get(0).getSurplus() > 0)
             return true;
         return false;
     }
 
     //学生未选课 已选：true
-    public static boolean isSelect(final String studentId,String courseId){
+    public static boolean isSelect(final String studentId, String courseId) {
         Condition<StudentInfo> conditionStu = new Condition<StudentInfo>() {
             @Override
             public boolean assertBean(StudentInfo studentInfo) {

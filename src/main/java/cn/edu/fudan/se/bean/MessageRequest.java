@@ -10,9 +10,10 @@ import java.io.Serializable;
  */
 public class MessageRequest implements Serializable {
     public String id;
-
-    public MessageRequest(JSONObject id) {
+    public int functionTag;
+    public MessageRequest(JSONObject id,int functionTag) {
         this.id = id.toString();
+        this.functionTag = functionTag;
     }
 
     @Override

@@ -4,7 +4,6 @@ package cn.edu.fudan.se.server;/**
 
 
 import cn.edu.fudan.se.Parameter;
-import cn.edu.fudan.se.bean.CourseInfo;
 import cn.edu.fudan.se.bean.Time;
 import cn.edu.fudan.se.function.CourseBackUp;
 import cn.edu.fudan.se.function.HashUtil;
@@ -39,8 +38,9 @@ public class DropCourse extends ActionSupport implements ServletResponseAware, S
                 //根据选课号获得课程时间
                 Time time = CourseBackUp.getTime(jsob.getString("courseId"));
                 invoker.setUp(jsob, response,
-                        Parameter.RESPONSE_TAG_COURSE + HashUtil.courseHash(time) + "||" + Parameter.RESPONSE_TAG_DROP,
-                        Parameter.REQUEST_TAG_COURSE + HashUtil.courseHash(time) + "||" + Parameter.REQUEST_TAG_DROP);
+                        Parameter.RESPONSE_TAG_COURSE + HashUtil.courseHash(time),
+                        Parameter.REQUEST_TAG_COURSE + HashUtil.courseHash(time),
+                        Parameter.REQUEST_DROP);
 
 
                 line = in.readLine();

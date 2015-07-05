@@ -31,7 +31,10 @@ public class ClearData extends ActionSupport implements ServletResponseAware,Ser
             while (line!=null){
                 JSONObject jsob = new JSONObject(line);
                 Invoker invoker = new Invoker(4);
-                invoker.setUp(jsob, response, Parameter.RESPONSE_TAG_CLEAR,Parameter.REQUEST_TAG_CLEAR);
+                invoker.setUp(jsob, response,
+                        Parameter.RESPONSE_TAG_CLEAR,
+                        Parameter.REQUEST_TAG_CLEAR,
+                        Parameter.DEFAULT);
 
                 line = in.readLine();
             }
