@@ -42,19 +42,19 @@ public class ResponsorHost1 extends Messager implements Runnable {
             if (tags.contains(Parameter.REQUEST_TAG_SCHOOL)) {
                 // 添加学院信息
                 JSONObject jsob = Servlet.addSchoolInfo(jsonObject);
-                List<String> ret = new ArrayList<String>();
-                ret.add(jsob.toString());
-                response = new MessageResponse(messageId, ret);
-                sendMessage(Parameter.RESPONSE_TAG_SCHOOL,
-                        Parameter.RESPONSER_KEY, response);
+//                List<String> ret = new ArrayList<String>();
+//                ret.add(jsob.toString());
+//                response = new MessageResponse(messageId, ret);
+//                sendMessage(Parameter.RESPONSE_TAG_SCHOOL,
+//                        Parameter.RESPONSER_KEY, response);
             } else if (tags.contains(Parameter.REQUEST_TAG_STUDENT)) {
                 // 添加学生信息
                 JSONObject jsob = Servlet.addStudentInfo(jsonObject);
-                List<String> ret = new ArrayList<String>();
-                ret.add(jsob.toString());
-                response = new MessageResponse(messageId, ret);
-                sendMessage(Parameter.RESPONSE_TAG_STUDENT,
-                        Parameter.RESPONSER_KEY, response);
+//                List<String> ret = new ArrayList<String>();
+//                ret.add(jsob.toString());
+//                response = new MessageResponse(messageId, ret);
+//                sendMessage(Parameter.RESPONSE_TAG_STUDENT,
+//                        Parameter.RESPONSER_KEY, response);
             } else if (tags.contains(Parameter.REQUEST_TAG_CLEAR)) {
                 // 清除数据
                 Servlet.clearData();
