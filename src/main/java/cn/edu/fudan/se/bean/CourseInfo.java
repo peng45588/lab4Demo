@@ -1,10 +1,12 @@
 package cn.edu.fudan.se.bean;
 
 
+import java.io.Serializable;
+
 /**
  * Created by snow on 15-6-19.
  */
-public class CourseInfo {
+public class CourseInfo implements Serializable {
     private String courseId;
     private String schoolName;
     private String courseName;

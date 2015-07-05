@@ -1,6 +1,5 @@
 package cn.edu.fudan.se.function;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,11 +9,13 @@ import org.json.JSONObject;
 public class Test {
     public static void main(String [] args){
         //System.out.println("myqTmac");
-        addSchoolInfoTest();
-        addCourseInfoTest();
-        addStudentInfoTest();
-        queryCourseByTimeTest();
-        queryCourseByIdTest();
+        Servlet.clearData();
+//        addSchoolInfoTest();
+//        addSchoolInfoTest();
+//        addCourseInfoTest();
+//        addStudentInfoTest();
+//        queryCourseByTimeTest();
+//        queryCourseByIdTest();
     }
 
     public static void addSchoolInfoTest() {
@@ -49,8 +50,8 @@ public class Test {
             e.printStackTrace();
         }
 
+        CourseBackUp.SaveCourse(addCourseInfoJSON);
         JSONObject addCourseInfoResult = Servlet.addCourseInfo(addCourseInfoJSON);
-
         System.out.println(addCourseInfoResult.toString());
     }
 

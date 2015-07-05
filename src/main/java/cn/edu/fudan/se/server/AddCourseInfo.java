@@ -4,9 +4,9 @@ package cn.edu.fudan.se.server;/**
 
 
 import cn.edu.fudan.se.Parameter;
-import cn.edu.fudan.se.bean.CourseInfo;
 import cn.edu.fudan.se.bean.Time;
 import cn.edu.fudan.se.function.HashUtil;
+import cn.edu.fudan.se.function.CourseBackUp;
 import cn.edu.fudan.se.messager.Invoker;
 import cn.edu.fudan.se.messager.PrintToHtml;
 import com.opensymphony.xwork2.ActionSupport;
@@ -33,9 +33,10 @@ public class AddCourseInfo extends ActionSupport implements ServletResponseAware
             String line = in.readLine();
             while (line!=null){
                 JSONObject jsob = new JSONObject(line);
+                // 将课程存于本地,方便以后的查询,获得课程时间
+                Time time = CourseBackUp.SaveCourse(jsob);
                 Invoker invoker = new Invoker(4);
-                //TODO 根据选课号获得课程时间
-                Time time = null;
+
                 invoker.setUp(jsob, response,
                         Parameter.RESPONSE_TAG_COURSE+ HashUtil.courseHash(time)+"||"+Parameter.RESPONSE_TAG_COURSE_INFO,
                         Parameter.REQUEST_TAG_COURSE+ HashUtil.courseHash(time)+"||"+Parameter.REQUEST_TAG_COURSE_INFO);

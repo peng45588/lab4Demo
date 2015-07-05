@@ -8,14 +8,14 @@
 <struts>
         <constant name="struts.action.extension" value="," />
         <package name="course" extends="struts-default">
-                <action name="addSchoolInfo" class="cn.edu.fudan.se.messager.AddCourseInfo"></action>
-                <!--<action name="addCourseInfo" class="com.course.server.AddCourseInfo"></action>-->
-                <!--<action name="addStudentInfo" class="com.course.server.AddStudentInfo"></action>-->
-                <!--<action name="queryCourseById" class="com.course.server.QueryCourseById"></action>-->
-                <!--<action name="queryCourseByTime" class="com.course.server.QueryCourseByTime"></action>-->
-                <!--<action name="querySchedule" class="com.course.server.QuerySchedule"></action>-->
-                <!--<action name="selectCourse" class="com.course.server.SelectCourse"></action>-->
-                <!--<action name="dropCourse" class="com.course.server.DropCourse"></action>-->
-                <!--<action name="clearData" class="com.course.server.ClearData"></action>-->
+                <action name="addSchoolInfo" class="cn.edu.fudan.se.server.AddSchoolInfo"></action>
+                <action name="addCourseInfo" class="cn.edu.fudan.se.server.AddCourseInfo"></action>
+                <action name="addStudentInfo" class="cn.edu.fudan.se.server.AddStudentInfo"></action>
+                <action name="queryCourseById" class="cn.edu.fudan.se.server.QueryCourseById"></action>
+                <action name="queryCourseByTime" class="cn.edu.fudan.se.server.QueryCourseByTime"></action>
+                <action name="querySchedule" class="cn.edu.fudan.se.server.QuerySchedule"></action>
+                <action name="selectCourse" class="cn.edu.fudan.se.server.SelectCourse"></action>
+                <action name="dropCourse" class="cn.edu.fudan.se.server.DropCourse"></action>
+                <action name="clearData" class="cn.edu.fudan.se.server.ClearData"></action>
         </package>
 </struts>

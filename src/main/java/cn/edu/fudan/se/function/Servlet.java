@@ -1,9 +1,6 @@
 package cn.edu.fudan.se.function;
 
-import cn.edu.fudan.se.bean.CourseInfo;
-import cn.edu.fudan.se.bean.SchoolInfo;
-import cn.edu.fudan.se.bean.StudentInfo;
-import cn.edu.fudan.se.bean.Time;
+import cn.edu.fudan.se.bean.*;
 import cn.edu.fudan.se.dac.BeanSetter;
 import cn.edu.fudan.se.dac.Condition;
 import cn.edu.fudan.se.dac.DACFactory;
@@ -22,7 +19,6 @@ public class Servlet {
     public static JSONObject addCourseInfo(JSONObject jsInput) {
         JSONObject jsOutput = new JSONObject();
         try {
-            //TODO 代码写在这里
             CourseInfo ci = new CourseInfo();
             String courseId = jsInput.getString("courseId");
             ci.setCourseId(jsInput.getString("courseId"));
@@ -76,7 +72,6 @@ public class Servlet {
     }
 
     public static JSONObject addSchoolInfo(JSONObject jsInput) {
-        //TODO 代码写在这里
         JSONObject jsOutput = new JSONObject();
         try {
             SchoolInfo si = new SchoolInfo();
@@ -136,8 +131,6 @@ public class Servlet {
 
     public static JSONObject queryCourseById(JSONObject jsInput) {
         JSONObject jsOutput = new JSONObject();
-
-        //TODO 代码写在这里
         try {
             final String courseId = jsInput.getString("courseId");
             DataAccessInterface<CourseInfo> dac = DACFactory.getInstance().createDAC(CourseInfo.class);
@@ -164,7 +157,6 @@ public class Servlet {
 
     public static JSONObject queryCourseByTime(JSONObject jsInput) {
         JSONObject jsOutput = new JSONObject();
-        //TODO 代码写在这里
         try {
             final Time time = new Time();
             time.setPeriod(jsInput.getJSONObject("time").getInt("period"));
@@ -231,9 +223,8 @@ public class Servlet {
     public static JSONObject selectCourse(JSONObject jsInput) {
         JSONObject jsOutput = new JSONObject();
         try {
-            //TODO 代码写在这里
-            //TODO 判断 '学生不存在'|'课程不存在'|'学分已满'|'选课时间地点冲
-            //TODO  突'|'选课人数已满'
+            //判断 '学生不存在'|'课程不存在'|'学分已满'|'选课时间地点冲
+            //突'|'选课人数已满'
             final String studentId = jsInput.getString("studentId");
             final String courseId = jsInput.getString("courseId");
             if (!Judge.isStudent(studentId)) {//学生存在
@@ -307,8 +298,7 @@ public class Servlet {
     public static JSONObject dropCourse(JSONObject jsInput) {
         JSONObject jsOutput = new JSONObject();
         try {
-            //TODO 代码写在这里
-            //TODO 判断 学号不存在、课程不存在、未选
+            //判断 学号不存在、课程不存在、未选
             final String studentId = jsInput.getString("studentId");
             final String courseId = jsInput.getString("courseId");
             if (!Judge.isStudent(studentId)) {//学号存在
@@ -374,8 +364,10 @@ public class Servlet {
         DataAccessInterface<StudentInfo> studentDAC = DACFactory.getInstance().createDAC(StudentInfo.class);
         DataAccessInterface<CourseInfo> courseDAC = DACFactory.getInstance().createDAC(CourseInfo.class);
         DataAccessInterface<SchoolInfo> schoolDAC = DACFactory.getInstance().createDAC(SchoolInfo.class);
-        studentDAC.deleteByCondition(studentInfo -> true);
-        courseDAC.deleteByCondition(courseInfo -> true);
-        schoolDAC.deleteByCondition(schoolInfo -> true);
+        DataAccessInterface<CourseBackUpInfo> backupDAC = DACFactory.getInstance().createDAC(CourseBackUpInfo.class);
+        studentDAC.deleteByCondition(Condition.True);
+        courseDAC.deleteByCondition(Condition.True);
+        schoolDAC.deleteByCondition(Condition.True);
+        backupDAC.deleteByCondition(Condition.True);
     }
 }

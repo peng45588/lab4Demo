@@ -4,14 +4,14 @@ package cn.edu.fudan.se;
  * Created by Dawnwords on 2015/5/24.
  */
 public class Parameter {
-    public static final String TOPIC = "taTopic2";
+    public static final String TOPIC = "taTopic";
     public static final String INVOKER_CONSUMER_GROUP = "invoker-cta";
     public static final String INVOKER_PRODUCER_GROUP = "invoker-pta";
     public static final String INVOKER_KEY = "request";
 
-    public static final String RESPONSOR_CONSUMER_GROUP = "responsor-cta";
-    public static final String RESPONSOR_PRODUCER_GROUP = "responsor-pta";
-    public static final String RESPONSOR_KEY = "response";
+    public static final String RESPONSER_CONSUMER_GROUP = "responser-cta";
+    public static final String RESPONSER_PRODUCER_GROUP = "responser-pta";
+    public static final String RESPONSER_KEY = "response";
 
     public static final String RESPONSE_TAG_SCHOOL = "school_all_response";
     public static final String REQUEST_TAG_SCHOOL = "school_all_request";
@@ -41,5 +41,5 @@ public class Parameter {
     public static final String RESPONSE_TAG_COURSE_INFO = "course_info_response";
 
     public static final String REQUEST_TAG_QUERY_BY_ID = "query_by_id_request";
-    public static final String RESPONSE_TAG_QUERY_BY_ID = "query_by_id_respinse";
+    public static final String RESPONSE_TAG_QUERY_BY_ID = "query_by_id_response";
 }

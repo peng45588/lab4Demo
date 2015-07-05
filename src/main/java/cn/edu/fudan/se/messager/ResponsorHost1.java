@@ -17,16 +17,16 @@ import java.util.List;
 /**
  * Created by Dawnwords on 2015/5/23.
  */
-public class ResponsorHost1 extends Messager implements Runnable{
+public class ResponsorHost1 extends Messager implements Runnable {
     private int responsorId;
 
     public ResponsorHost1(int responsorId) {
-        super(Parameter.TOPIC, Parameter.RESPONSOR_CONSUMER_GROUP, Parameter.RESPONSOR_PRODUCER_GROUP);
+        super(Parameter.TOPIC, Parameter.RESPONSER_CONSUMER_GROUP, Parameter.RESPONSER_PRODUCER_GROUP);
         this.responsorId = responsorId;
     }
 
     @Override
-    protected boolean onReceiveMessage(String messageId, Object messageBody,String tags) {
+    protected boolean onReceiveMessage(String messageId, Object messageBody, String tags) {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -44,60 +44,75 @@ public class ResponsorHost1 extends Messager implements Runnable{
                 List<String> ret = new ArrayList<String>();
                 ret.add(jsob.toString());
                 response = new MessageResponse(messageId, ret);
+                sendMessage(  Parameter.RESPONSE_TAG_SCHOOL,
+                        Parameter.RESPONSER_KEY, response);
             } else if (tags.contains(Parameter.REQUEST_TAG_STUDENT)) {
-                // TODO 添加学生信息
+                // 添加学生信息
                 JSONObject jsob = Servlet.addStudentInfo(jsonObject);
                 List<String> ret = new ArrayList<String>();
                 ret.add(jsob.toString());
                 response = new MessageResponse(messageId, ret);
+                sendMessage(  Parameter.RESPONSE_TAG_STUDENT,
+                        Parameter.RESPONSER_KEY, response);
             } else if (tags.contains(Parameter.REQUEST_TAG_CLEAR)) {
-                // TODO 清除数据
+                // 清除数据
                 Servlet.clearData();
             } else if (tags.contains(Parameter.REQUEST_TAG_COURSE)) {
                 if (tags.contains(Parameter.REQUEST_TAG_SELECT)) {
-                    // TODO 选课
+                    //  选课
                     JSONObject jsob = Servlet.selectCourse(jsonObject);
                     List<String> ret = new ArrayList<String>();
                     ret.add(jsob.toString());
                     response = new MessageResponse(messageId, ret);
+                    sendMessage(  Parameter.RESPONSE_TAG_COURSE
+                            + "||" + Parameter.RESPONSE_TAG_SELECT, Parameter.RESPONSER_KEY, response);
                 } else if (tags.contains(Parameter.REQUEST_TAG_DROP)) {
-                    // TODO 退课
+                    // 退课
                     JSONObject jsob = Servlet.dropCourse(jsonObject);
                     List<String> ret = new ArrayList<String>();
                     ret.add(jsob.toString());
                     response = new MessageResponse(messageId, ret);
+                    sendMessage(  Parameter.RESPONSE_TAG_COURSE
+                            + "||" + Parameter.RESPONSE_TAG_DROP, Parameter.RESPONSER_KEY, response);
                 } else if (tags.contains(Parameter.REQUEST_TAG_QUERY_BY_TIME)) {
-                    // TODO 根据时间查课程
+                    // 根据时间查课程
                     JSONObject jsob = Servlet.queryCourseByTime(jsonObject);
                     List<String> ret = new ArrayList<String>();
                     ret.add(jsob.toString());
                     response = new MessageResponse(messageId, ret);
+                    sendMessage(  Parameter.RESPONSE_TAG_COURSE
+                            + "||" + Parameter.RESPONSE_TAG_QUERY_BY_TIME, Parameter.RESPONSER_KEY, response);
                 } else if (tags.contains(Parameter.REQUEST_TAG_COURSE_INFO)) {
-                    // TODO 添加课程信息
+                    // 添加课程信息
                     JSONObject jsob = Servlet.addCourseInfo(jsonObject);
                     List<String> ret = new ArrayList<String>();
                     ret.add(jsob.toString());
                     response = new MessageResponse(messageId, ret);
+                    sendMessage(  Parameter.RESPONSE_TAG_COURSE
+                            + "||" + Parameter.RESPONSE_TAG_COURSE_INFO, Parameter.RESPONSER_KEY, response);
                 }
             } else if (tags.contains(Parameter.REQUEST_TAG_SCHEDULE)) {
-                // TODO 学生选课情况
+                // 学生选课情况
                 JSONObject jsob = Servlet.querySchedule(jsonObject);
                 List<String> ret = new ArrayList<String>();
                 ret.add(jsob.toString());
                 response = new MessageResponse(messageId, ret);
+                sendMessage(  Parameter.RESPONSE_TAG_SCHEDULE,
+                        Parameter.RESPONSER_KEY, response);
             } else if (tags.contains(Parameter.REQUEST_TAG_QUERY_BY_ID)) {
-                // TODO 根据id查课表
+                // 根据id查课表
                 JSONObject jsob = Servlet.queryCourseById(jsonObject);
                 List<String> ret = new ArrayList<String>();
                 ret.add(jsob.toString());
                 response = new MessageResponse(messageId, ret);
+                sendMessage(  Parameter.RESPONSE_TAG_QUERY_BY_ID,
+                        Parameter.RESPONSER_KEY, response);
             } else
                 return false;
-            sendMessage(Parameter.RESPONSE_TAG_COURSE + 0, Parameter.RESPONSOR_KEY, response);
+
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
-
 
 
         }
@@ -123,6 +138,6 @@ public class ResponsorHost1 extends Messager implements Runnable{
     }
 
     public static void main(String[] args) {
-        new Thread(new ResponsorHost1((int) (System.currentTimeMillis()%1000))).start();
+        new Thread(new ResponsorHost1((int) (System.currentTimeMillis() % 1000))).start();
     }
 }

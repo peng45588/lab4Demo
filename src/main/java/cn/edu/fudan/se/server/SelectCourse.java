@@ -5,6 +5,7 @@ package cn.edu.fudan.se.server;/**
 
 import cn.edu.fudan.se.Parameter;
 import cn.edu.fudan.se.bean.Time;
+import cn.edu.fudan.se.function.CourseBackUp;
 import cn.edu.fudan.se.function.HashUtil;
 import cn.edu.fudan.se.messager.Invoker;
 import cn.edu.fudan.se.messager.PrintToHtml;
@@ -34,8 +35,8 @@ public class SelectCourse extends ActionSupport implements ServletResponseAware,
             while (line != null) {
                 JSONObject jsob = new JSONObject(line);
                 Invoker invoker = new Invoker(4);
-                //TODO 根据选课号获得课程时间
-                Time time = null;
+                //根据选课号获得课程时间
+                Time time = CourseBackUp.getTime(jsob.getString("courseId"));
                 invoker.setUp(jsob, response,
                         Parameter.RESPONSE_TAG_COURSE + HashUtil.courseHash(time) + "||" + Parameter.RESPONSE_TAG_SELECT,
                         Parameter.REQUEST_TAG_COURSE + HashUtil.courseHash(time) + "||" + Parameter.REQUEST_TAG_SELECT);
