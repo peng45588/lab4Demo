@@ -10,12 +10,12 @@ import java.util.List;
 /**
  * Created by Dawnwords on 2015/5/24.
  */
-public class LectureResponse implements Serializable {
+public class MessageResponse implements Serializable {
     public final String requestId;
     public final List<String> jsob;
 
 
-    public LectureResponse(String requestId, List<String> jsob) {
+    public MessageResponse(String requestId, List<String> jsob) {
         this.requestId = requestId;
         this.jsob = jsob;
     }

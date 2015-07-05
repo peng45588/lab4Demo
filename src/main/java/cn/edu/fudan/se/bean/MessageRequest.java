@@ -8,10 +8,10 @@ import java.io.Serializable;
 /**
  * Created by Dawnwords on 2015/5/24.
  */
-public class LectureRequest implements Serializable {
+public class MessageRequest implements Serializable {
     public String id;
 
-    public LectureRequest(JSONObject id) {
+    public MessageRequest(JSONObject id) {
         this.id = id.toString();
     }
 

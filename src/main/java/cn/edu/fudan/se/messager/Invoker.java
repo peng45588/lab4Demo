@@ -1,8 +1,8 @@
 package cn.edu.fudan.se.messager;
 
 import cn.edu.fudan.se.Parameter;
-import cn.edu.fudan.se.bean.LectureRequest;
-import cn.edu.fudan.se.bean.LectureResponse;
+import cn.edu.fudan.se.bean.MessageRequest;
+import cn.edu.fudan.se.bean.MessageResponse;
 import com.alibaba.rocketmq.client.producer.SendResult;
 
 import java.util.Iterator;
@@ -40,11 +40,11 @@ public class Invoker extends Messager{
     protected boolean onReceiveMessage(String messageId, Object messageBody,String tag) {
         //TODO 从responsor接受到的返回值,改成专有的类 传回来的值为messagebody
         
-        if (!(messageBody instanceof LectureResponse)) {
+        if (!(messageBody instanceof MessageResponse)) {
             log("response type error");
             return false;
         }
-        LectureResponse ret = (LectureResponse) messageBody;
+        MessageResponse ret = (MessageResponse) messageBody;
         if (!idHandlerMap.containsKey(ret.requestId)) {
             log("request id not exists");
         } else {
@@ -61,7 +61,7 @@ public class Invoker extends Messager{
             if ("stop".equals(jsob.toString())) {
 
             } else {
-                LectureRequest body = new LectureRequest(jsob);
+                MessageRequest body = new MessageRequest(jsob);
                 SendResult sendResult = sendMessage(tagRequest, Parameter.INVOKER_KEY, body);
                 //回调函数,用以得到返回值
                 idHandlerMap.put(sendResult.getMsgId(), new Handler(responsorCount, sendResult.getMsgId()));
