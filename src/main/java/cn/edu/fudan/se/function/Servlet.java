@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -105,6 +106,7 @@ public class Servlet {
             si.setName(jsInput.getString("name"));
             si.setGender(jsInput.getString("gender"));
             si.setSchoolName(jsInput.getString("schoolName"));
+            si.setCourseId(new ArrayList<>());
 
             //判断学号、学院
             if (Judge.isStudent(jsInput.getString("studentId"))) {//学号不存在
@@ -230,8 +232,8 @@ public class Servlet {
             if (!Judge.isStudent(studentId)) {//学生存在
                 if (!Judge.isCourse(courseId)) {//课程存在
                     if (Judge.isSelectTimeOrLocation(studentId, courseId)) {//选课时间地点不冲突
-                        if (Judge.isSelectFull(courseId)) {//选课人数未满
-                            if (Judge.isStudentCredit(studentId)) {//学生学分满
+                        if (Judge.isStudentCredit(studentId)) {//学生学分满
+                            if (Judge.isSelectFull(courseId)) {//选课人数未满
 
                                 //修改学生选课信息
                                 DataAccessInterface<StudentInfo> dac = DACFactory.getInstance().createDAC(StudentInfo.class);
@@ -268,14 +270,14 @@ public class Servlet {
                                 };
                                 dacCou.updateByCondition(conditionCou, setterCou);
                                 jsOutput.put(Config.SUCCESS, true);
-                                jsOutput.put(Config.FAILREASON,"");
+                                jsOutput.put(Config.FAILREASON, "");
                             } else {
                                 jsOutput.put(Config.SUCCESS, false);
-                                jsOutput.put(Config.FAILREASON, Config.CREDIT_FULL);
+                                jsOutput.put(Config.FAILREASON, Config.SELECT_FULL);
                             }
                         } else {
                             jsOutput.put(Config.SUCCESS, false);
-                            jsOutput.put(Config.FAILREASON, Config.SELECT_FULL);
+                            jsOutput.put(Config.FAILREASON, Config.CREDIT_FULL);
                         }
                     } else {
                         jsOutput.put(Config.SUCCESS, false);
@@ -341,7 +343,7 @@ public class Servlet {
                         dacCou.updateByCondition(conditionCou, setterCou);
 
                         jsOutput.put(Config.SUCCESS, true);
-                        jsOutput.put(Config.FAILREASON,"");
+                        jsOutput.put(Config.FAILREASON, "");
                     } else {
                         jsOutput.put(Config.SUCCESS, false);
                         jsOutput.put(Config.FAILREASON, Config.STUDENT_NOT_SELECT);
@@ -352,6 +354,7 @@ public class Servlet {
                 }
             } else {
                 jsOutput.put(Config.SUCCESS, false);
+
                 jsOutput.put(Config.FAILREASON, Config.STUDENT_NOT_EXIST);
             }
         } catch (Exception e) {

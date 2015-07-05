@@ -50,6 +50,7 @@ public class Invoker extends Messager{
         } else {
             idHandlerMap.get(ret.requestId).addResponse(ret.jsob);
             PrintToHtml.PrintToHtml(this.response, ret.jsob.get(0));
+            //this.stop();
         }
         return true;
     }
@@ -59,7 +60,7 @@ public class Invoker extends Messager{
         this.response = response;
         try {
             if ("stop".equals(jsob.toString())) {
-
+                stop();
             } else {
                 MessageRequest body = new MessageRequest(jsob,functionTag);
                 SendResult sendResult = sendMessage(tagRequest, Parameter.INVOKER_KEY, body);

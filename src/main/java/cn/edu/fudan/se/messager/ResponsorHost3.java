@@ -117,8 +117,6 @@ public class ResponsorHost3 extends Messager implements Runnable {
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
-
-
         }
 
         return true;

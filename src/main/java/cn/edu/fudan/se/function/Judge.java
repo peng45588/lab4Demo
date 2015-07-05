@@ -136,9 +136,7 @@ public class Judge {
         Condition<CourseInfo> conditionCou = new Condition<CourseInfo>() {
             @Override
             public boolean assertBean(CourseInfo courseInfo) {
-                if (stuCourseId.contains(courseInfo.getCourseId()))
-                    return true;
-                return false;
+                return stuCourseId.contains(courseInfo.getCourseId());
             }
         };
         List<CourseInfo> listCou = dacCou.selectByCondition(conditionCou);
@@ -150,7 +148,7 @@ public class Judge {
                 return courseInfo.getCourseId().equals(courseId);
             }
         };
-        CourseInfo course = (CourseInfo) dacCou.selectByCondition(conditionCou);
+        CourseInfo course = (CourseInfo) dacCou.selectByCondition(conditionCou).get(0);
         //判断时间地点是否冲突
         for (int i = 0; i < listCou.size(); i++) {
             //if (listCou.get(i).getLocation().equals(course.getLocation()))

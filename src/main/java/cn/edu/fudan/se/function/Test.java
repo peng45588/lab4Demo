@@ -9,13 +9,13 @@ import org.json.JSONObject;
 public class Test {
     public static void main(String [] args){
         //System.out.println("myqTmac");
-        Servlet.clearData();
+//        Servlet.clearData();
 //        addSchoolInfoTest();
-//        addSchoolInfoTest();
-//        addCourseInfoTest();
 //        addStudentInfoTest();
-//        queryCourseByTimeTest();
-//        queryCourseByIdTest();
+//        addCourseInfoTest();
+        queryScheduleTest();
+        dropCourseTest();
+        queryScheduleTest();
     }
 
     public static void addSchoolInfoTest() {
@@ -35,15 +35,15 @@ public class Test {
     public static void addCourseInfoTest() {
         JSONObject addCourseInfoJSON = new JSONObject();
         try {
-            addCourseInfoJSON.put("courseId", "SS100120120120");
+            addCourseInfoJSON.put("courseId", "SS100120120121");
             addCourseInfoJSON.put("schoolName", "SS");
-            addCourseInfoJSON.put("courseName","ICS");
+            addCourseInfoJSON.put("courseName","CS");
             addCourseInfoJSON.put("teacherName", "John");
             addCourseInfoJSON.put("credit",4);
             addCourseInfoJSON.put("location", "2103");
             JSONObject timeJSON = new JSONObject();
-            timeJSON.put("weekday", 1);
-            timeJSON.put("period", 2);
+            timeJSON.put("weekday", 3);
+            timeJSON.put("period", 3);
             addCourseInfoJSON.put("time", timeJSON);
             addCourseInfoJSON.put("capacity", 90);
         } catch (JSONException e) {
@@ -98,6 +98,41 @@ public class Test {
         JSONObject queryCourseByIdResult = Servlet.queryCourseById(queryCourseByIdJSON);
 
         System.out.println(queryCourseByIdResult.toString());
+    }
+
+    public static void queryScheduleTest() {
+        JSONObject in = new JSONObject();
+        try {
+            in.put("studentId", "12302010023");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject out = Servlet.querySchedule(in);
+        System.out.println(out.toString());
+    }
+
+    public static void selectCourseTest() {
+        JSONObject in = new JSONObject();
+        try {
+            in.put("studentId","12302010023");
+            in.put("courseId","SS100120120121");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject out = Servlet.selectCourse(in);
+        System.out.println(out.toString());
+    }
+
+    public static void dropCourseTest() {
+        JSONObject in = new JSONObject();
+        try {
+            in.put("studentId","12302010023");
+            in.put("courseId","SS100120120120");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject out = Servlet.dropCourse(in);
+        System.out.println(out.toString());
     }
 
 }

@@ -25,12 +25,13 @@ public class QuerySchedule extends ActionSupport implements ServletResponseAware
     //定义处理用户请求的execute方法
     public String execute() {
         String ret = "1232123";
+        Invoker invoker = null;
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
             String line = in.readLine();
             while (line!=null){
                 JSONObject jsob = new JSONObject(line);
-                Invoker invoker = new Invoker(4);
+                invoker = new Invoker(4);
 
                 invoker.setUp(jsob, response,
                         Parameter.REQUEST_TAG_SCHEDULE,
@@ -47,6 +48,8 @@ public class QuerySchedule extends ActionSupport implements ServletResponseAware
         while (!PrintToHtml.isPrint()){//未打印:
 
         }
+//        if (invoker!=null)
+//            invoker.stop();
         return null;
     }
 

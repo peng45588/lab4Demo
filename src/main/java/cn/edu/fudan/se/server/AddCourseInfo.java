@@ -28,6 +28,8 @@ public class AddCourseInfo extends ActionSupport implements ServletResponseAware
     //定义处理用户请求的execute方法
     public String execute() {
         String ret = "1232123";
+        Invoker invoker = null;
+
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
             String line = in.readLine();
@@ -35,7 +37,7 @@ public class AddCourseInfo extends ActionSupport implements ServletResponseAware
                 JSONObject jsob = new JSONObject(line).getJSONObject("course");
                 // 将课程存于本地,方便以后的查询,获得课程时间
                 Time time = CourseBackUp.SaveCourse(jsob);
-                Invoker invoker = new Invoker(4);
+                invoker = new Invoker(4);
 
                 invoker.setUp(jsob, response,
                         Parameter.RESPONSE_TAG_COURSE + HashUtil.courseHash(time),
@@ -52,6 +54,8 @@ public class AddCourseInfo extends ActionSupport implements ServletResponseAware
         while (!PrintToHtml.isPrint()){//未打印:
 
         }
+//        if (invoker!=null)
+//            invoker.stop();
         return null;
     }
 

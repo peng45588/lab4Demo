@@ -27,6 +27,7 @@ public class QueryCourseByTime extends ActionSupport implements ServletResponseA
     //定义处理用户请求的execute方法
     public String execute() {
         String ret = "1232123";
+        Invoker invoker = null;
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
             String line = in.readLine();
@@ -36,10 +37,10 @@ public class QueryCourseByTime extends ActionSupport implements ServletResponseA
                 Time time = new Time();
                 time.setWeekday(JSONTime.getInt("weekday"));
                 time.setPeriod(JSONTime.getInt("period"));
-                Invoker invoker = new Invoker(4);
+                invoker = new Invoker(4);
                 invoker.setUp(jsob, response,
-                        Parameter.RESPONSE_TAG_COURSE+ HashUtil.courseHash(time),
-                        Parameter.REQUEST_TAG_COURSE+ HashUtil.courseHash(time),
+                        Parameter.RESPONSE_TAG_COURSE + HashUtil.courseHash(time),
+                        Parameter.REQUEST_TAG_COURSE + HashUtil.courseHash(time),
                         Parameter.REQUEST_QUERY_BY_TIME);
 
                 line = in.readLine();
@@ -52,6 +53,8 @@ public class QueryCourseByTime extends ActionSupport implements ServletResponseA
         while (!PrintToHtml.isPrint()){//未打印:
 
         }
+//        if (invoker!=null)
+//            invoker.stop();
         return null;
     }
 

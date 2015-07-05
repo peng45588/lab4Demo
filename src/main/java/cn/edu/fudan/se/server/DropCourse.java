@@ -29,7 +29,7 @@ public class DropCourse extends ActionSupport implements ServletResponseAware, S
     //定义处理用户请求的execute方法
     public String execute() {
         String ret = "1232123";
-        Invoker invoker = new Invoker(4);
+        Invoker invoker = null;
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
             String line = in.readLine();
@@ -37,6 +37,7 @@ public class DropCourse extends ActionSupport implements ServletResponseAware, S
                 JSONObject jsob = new JSONObject(line);
                 //根据选课号获得课程时间
                 Time time = CourseBackUp.getTime(jsob.getString("courseId"));
+                invoker = new Invoker(4);
                 invoker.setUp(jsob, response,
                         Parameter.RESPONSE_TAG_COURSE + HashUtil.courseHash(time),
                         Parameter.REQUEST_TAG_COURSE + HashUtil.courseHash(time),
@@ -53,7 +54,8 @@ public class DropCourse extends ActionSupport implements ServletResponseAware, S
         while (!PrintToHtml.isPrint()) {//未打印:
 
         }
-        invoker.stop();
+//        if (invoker!=null)
+//            invoker.stop();
         return null;
     }
 
