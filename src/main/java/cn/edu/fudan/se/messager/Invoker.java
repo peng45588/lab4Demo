@@ -7,6 +7,8 @@ import com.alibaba.rocketmq.client.producer.SendResult;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.JSONException;
@@ -66,8 +68,11 @@ public class Invoker extends Messager{
                 SendResult sendResult = sendMessage(tagRequest, Parameter.INVOKER_KEY, body);
                 //回调函数,用以得到返回值
                 idHandlerMap.put(sendResult.getMsgId(), new Handler(responsorCount, sendResult.getMsgId()));
-                log(String.format("[%s]%s", sendResult.getMsgId(), jsob));
+                log(String.format("[send]id:%s,%s", sendResult.getMsgId(), jsob));
             }
+            //定时关闭invoke
+            Timer timer = new Timer();
+            timer.schedule(new CloseInvoke(), 3 * 1000);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -96,7 +101,7 @@ public class Invoker extends Messager{
 
             }
             idHandlerMap.remove(key);
-            log(String.format("enough Response:\n%s", print));
+            //log(String.format("enough Response:\n%s", print));
         }
     }
 
@@ -115,5 +120,11 @@ public class Invoker extends Messager{
 
     public void setRequest(HttpServletRequest request) {
         this.request = request;
+    }
+
+    class CloseInvoke extends TimerTask {
+        public void run(){
+            invoker.stop();
+        }
     }
 }

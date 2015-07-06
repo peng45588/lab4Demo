@@ -4,7 +4,7 @@ package cn.edu.fudan.se;
  * Created by Dawnwords on 2015/5/24.
  */
 public class Parameter {
-    public static final String TOPIC = "taTopic4";
+    public static final String TOPIC = "taTopic5";
     public static final String INVOKER_CONSUMER_GROUP = "invoker-cta";
     public static final String INVOKER_PRODUCER_GROUP = "invoker-pta";
     public static final String INVOKER_KEY = "request";

@@ -44,7 +44,7 @@ public abstract class Messager {
         consumer = new DefaultMQPushConsumer(consumerGroup);
         consumer.setNamesrvAddr(NS_IP_PORT);
         consumer.setMessageModel(MessageModel.BROADCASTING);
-        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
+        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_LAST_OFFSET);
         consumer.setInstanceName(consumerGroup + System.currentTimeMillis());
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
@@ -53,7 +53,7 @@ public abstract class Messager {
                 String tag = message.getTags();
                 String messageId = message.getMsgId();
                 Serializable messageBody = bytes2Bean(message.getBody());
-                log("[receiveMessage]id:" + messageId + " body:" + messageBody);
+                log("[receive]id:" + messageId + " body:" + messageBody);
                 return onReceiveMessage(messageId, messageBody,tag) ?
                         ConsumeConcurrentlyStatus.CONSUME_SUCCESS :
                         ConsumeConcurrentlyStatus.RECONSUME_LATER;
@@ -95,7 +95,7 @@ public abstract class Messager {
             out.close();
             Message message = new Message(topic, tag, key, bytes.toByteArray());
             result = producer.send(message);
-            log("[sendMessage]id:" + result.getMsgId() + " result:" + result.getSendStatus());
+            //log("[sendMessage]id:" + result.getMsgId() + " result:" + result.getSendStatus());
         } catch (Exception e) {
             e.printStackTrace();
         }

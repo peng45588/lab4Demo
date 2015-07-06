@@ -31,7 +31,7 @@ public class AddSchoolInfo extends ActionSupport implements ServletResponseAware
             String line = in.readLine();
             while (line!=null){
                 JSONObject jsob = new JSONObject(line);
-                invoker = new Invoker(1);
+                invoker = new Invoker(4);
                 invoker.setUp(jsob, response,
                         Parameter.RESPONSE_TAG_SCHOOL,
                         Parameter.REQUEST_TAG_SCHOOL,

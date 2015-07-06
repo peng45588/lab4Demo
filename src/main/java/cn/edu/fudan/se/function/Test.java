@@ -3,21 +3,30 @@ package cn.edu.fudan.se.function;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by MXQTmac on 2015/7/3.
  */
+class  out extends TimerTask {
+    public void run(){
+        System.out.println("snow");
+    }
+}
 public class Test {
     public static void main(String [] args){
-        //System.out.println("myqTmac");
+        Timer timer = new Timer();
+        timer.schedule(new out(), 3 * 1000);
+        System.out.println("myqTmac");
 //        Servlet.clearData();
 //        addSchoolInfoTest();
 //        addStudentInfoTest();
 //        addCourseInfoTest();
-        queryScheduleTest();
-        dropCourseTest();
-        queryScheduleTest();
+//        queryScheduleTest();
+//        dropCourseTest();
+//        queryScheduleTest();
     }
-
     public static void addSchoolInfoTest() {
         JSONObject addSchoolInfoJSON = new JSONObject();
         try {
