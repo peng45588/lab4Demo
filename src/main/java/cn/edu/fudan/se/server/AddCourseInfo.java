@@ -39,20 +39,24 @@ public class AddCourseInfo extends ActionSupport implements ServletResponseAware
                 Time time = CourseBackUp.SaveCourse(jsob);
                 invoker = new Invoker(4);
 
-                invoker.setUp(jsob, response,
+                PrintToHtml pth = invoker.setUp(jsob, response,
                         Parameter.RESPONSE_TAG_COURSE + HashUtil.courseHash(time),
                         Parameter.REQUEST_TAG_COURSE + HashUtil.courseHash(time),
                         Parameter.REQUEST_COURSE_INFO);
 
+                Thread.sleep(1000);
+                for (int i = 0;i<5;i++){
+                    if (!invoker.getPth().isPrint())
+                        Thread.sleep(1000);
+                }
                 line = in.readLine();
             }
         } catch (JSONException e) {
             //e.printStackTrace();
         } catch (IOException e) {
             //e.printStackTrace();
-        }
-        while (!PrintToHtml.isPrint()){//未打印:
-
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 //        if (invoker!=null)
 //            invoker.stop();

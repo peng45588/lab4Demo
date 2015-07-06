@@ -45,7 +45,7 @@ public class CourseBackUp {
             if (isCourse(courseId,dac))//课程不存在
                 if (Judge.isTimeOrLocation(time, jsInput.getString("location")))//时间地点不冲突
                     if (Judge.isTeacherTime(time, jsInput.getString("teacherName")))//教师时间不冲突
-                        if (!Judge.isSchool(jsInput.getString("schoolName"))) {//院系存在
+                        {
                             dac.beginTransaction();
                             dac.add(backUp);
                             dac.commit();

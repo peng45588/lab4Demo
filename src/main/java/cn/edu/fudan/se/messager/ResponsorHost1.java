@@ -125,7 +125,7 @@ public class ResponsorHost1 extends Messager implements Runnable {
     @Override
     public void run() {
         start(Parameter.REQUEST_TAG_COURSE + 1 + "||" + Parameter.REQUEST_TAG_STUDENT + "||"
-                + Parameter.REQUEST_TAG_SCHOOL + "||" + Parameter.REQUEST_TAG_CLEAR);
+                + Parameter.REQUEST_TAG_SCHOOL + "||" + Parameter.REQUEST_TAG_CLEAR+"||"+Parameter.REQUEST_TAG_SCHEDULE);
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
             try {

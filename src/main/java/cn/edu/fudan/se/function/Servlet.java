@@ -1,5 +1,6 @@
 package cn.edu.fudan.se.function;
 
+import cn.edu.fudan.se.Config;
 import cn.edu.fudan.se.bean.*;
 import cn.edu.fudan.se.dac.BeanSetter;
 import cn.edu.fudan.se.dac.Condition;

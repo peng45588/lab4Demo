@@ -38,20 +38,19 @@ public class QueryCourseByTime extends ActionSupport implements ServletResponseA
                 time.setWeekday(JSONTime.getInt("weekday"));
                 time.setPeriod(JSONTime.getInt("period"));
                 invoker = new Invoker(4);
-                invoker.setUp(jsob, response,
+                PrintToHtml pth = invoker.setUp(jsob, response,
                         Parameter.RESPONSE_TAG_COURSE + HashUtil.courseHash(time),
                         Parameter.REQUEST_TAG_COURSE + HashUtil.courseHash(time),
                         Parameter.REQUEST_QUERY_BY_TIME);
+                while (!pth.isPrint()){//未打印:
 
+                }
                 line = in.readLine();
             }
         } catch (JSONException e) {
             //e.printStackTrace();
         } catch (IOException e) {
             //e.printStackTrace();
-        }
-        while (!PrintToHtml.isPrint()){//未打印:
-
         }
 //        if (invoker!=null)
 //            invoker.stop();

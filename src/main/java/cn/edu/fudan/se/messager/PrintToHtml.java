@@ -11,8 +11,18 @@ import java.io.PrintWriter;
  */
 public class PrintToHtml extends ServletRedirectResult {
 
-    static boolean judge = false;
-    public static boolean isPrint(){
+    boolean judge = false;
+
+    public HttpServletResponse getResponse() {
+        return response;
+    }
+
+    public void setResponse(HttpServletResponse response) {
+        this.response = response;
+    }
+
+    private HttpServletResponse response;
+    public boolean isPrint(){
         if (judge==false)
             return false;
         else {
@@ -20,7 +30,13 @@ public class PrintToHtml extends ServletRedirectResult {
             return true;
         }
     }
-    public static String PrintToHtml(HttpServletResponse response,String ret){
+    public PrintToHtml(){
+
+    }
+    public PrintToHtml(HttpServletResponse response){
+        this.response = response;
+    }
+    public void Print(String ret){
 
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;chatset=utf-8");
@@ -35,6 +51,5 @@ public class PrintToHtml extends ServletRedirectResult {
         pw.flush();
         pw.close();
         judge = true;
-        return null;
     }
 }

@@ -37,15 +37,23 @@ public class AddSchoolInfo extends ActionSupport implements ServletResponseAware
                         Parameter.REQUEST_TAG_SCHOOL,
                         Parameter.DEFAULT);
 
+                Thread.sleep(1000);
+                for (int i = 0;i<5;i++){
+                    if (!invoker.getPth().isPrint())
+                        Thread.sleep(1000);
+                }
+
+//                while (!invoker.getPth().isPrint()){//未打印:
+//
+//                }
                 line = in.readLine();
             }
         } catch (JSONException e) {
             //e.printStackTrace();
         } catch (IOException e) {
             //e.printStackTrace();
-        }
-        while (!PrintToHtml.isPrint()){//未打印:
-
+        }catch (InterruptedException e) {
+            e.printStackTrace();
         }
 //        if (invoker!=null)
 //            invoker.stop();

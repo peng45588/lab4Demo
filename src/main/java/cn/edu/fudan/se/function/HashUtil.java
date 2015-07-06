@@ -10,7 +10,7 @@ public class HashUtil {
     public static int courseHash(Time courseTime) {
         int weekday = courseTime.getWeekday();
         int period = courseTime.getPeriod();
-//        return (weekday*period)%2;
-        return 0;
+        return (weekday*period)%2;
+//        return 0;
     }
 }

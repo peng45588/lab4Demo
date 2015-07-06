@@ -1,4 +1,4 @@
-package cn.edu.fudan.se.function;
+package cn.edu.fudan.se;
 
 /**
  * Created by snow on 15-6-23.
