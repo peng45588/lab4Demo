@@ -46,6 +46,7 @@ public class QueryCourseById extends ActionSupport implements ServletResponseAwa
                     if (!invoker.getPth().isPrint())
                         Thread.sleep(1000);
                 }
+                invoker.stop();
                 line = in.readLine();
             }
         } catch (JSONException e) {

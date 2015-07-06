@@ -42,8 +42,10 @@ public class QueryCourseByTime extends ActionSupport implements ServletResponseA
                         Parameter.RESPONSE_TAG_COURSE + HashUtil.courseHash(time),
                         Parameter.REQUEST_TAG_COURSE + HashUtil.courseHash(time),
                         Parameter.REQUEST_QUERY_BY_TIME);
-                while (!pth.isPrint()){//未打印:
-
+                Thread.sleep(1000);
+                for (int i = 0;i<5;i++){
+                    if (!invoker.getPth().isPrint())
+                        Thread.sleep(1000);
                 }
                 line = in.readLine();
             }
@@ -51,6 +53,8 @@ public class QueryCourseByTime extends ActionSupport implements ServletResponseA
             //e.printStackTrace();
         } catch (IOException e) {
             //e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 //        if (invoker!=null)
 //            invoker.stop();

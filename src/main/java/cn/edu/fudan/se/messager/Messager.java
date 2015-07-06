@@ -95,7 +95,7 @@ public abstract class Messager {
             out.close();
             Message message = new Message(topic, tag, key, bytes.toByteArray());
             result = producer.send(message);
-            //log("[sendMessage]id:" + result.getMsgId() + " result:" + result.getSendStatus());
+            log("[sendMessage]id:" + result.getMsgId() + " result:" + result.getSendStatus());
         } catch (Exception e) {
             e.printStackTrace();
         }

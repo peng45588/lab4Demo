@@ -67,7 +67,7 @@ public class Invoker extends Messager {
         }
         MessageResponse ret = (MessageResponse) messageBody;
         if (!idHandlerMap.containsKey(ret.requestId)) {
-            log("request id not exists");
+            //log("request id not exists");
         } else {
             idHandlerMap.get(ret.requestId).addResponse(ret.jsob);
             pth.Print(ret.jsob.get(0));
@@ -86,6 +86,7 @@ public class Invoker extends Messager {
             MessageRequest body = new MessageRequest(jsob, functionTag);
             SendResult sendResult = sendMessage(tagRequest, Parameter.INVOKER_KEY, body);
             //回调函数,用以得到返回值
+            log("[check]:"+tagRequest+",body.id="+body.id);
             idHandlerMap.put(sendResult.getMsgId(), new Handler(responsorCount, sendResult.getMsgId()));
             log(String.format("[send]id:%s,%s", sendResult.getMsgId(), jsob));
 

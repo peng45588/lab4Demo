@@ -47,7 +47,7 @@ public class DropCourse extends ActionSupport implements ServletResponseAware, S
                     if (!invoker.getPth().isPrint())
                         Thread.sleep(1000);
                 }
-
+                invoker.stop();
                 line = in.readLine();
             }
         } catch (JSONException e) {

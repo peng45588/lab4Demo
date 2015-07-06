@@ -42,6 +42,7 @@ public class ResponsorHost1 extends Messager implements Runnable {
             if (tags.contains(Parameter.REQUEST_TAG_SCHOOL)) {
                 // 添加学院信息
                 JSONObject jsob = Servlet.addSchoolInfo(jsonObject);
+                log("story:"+jsob.toString());
 //                List<String> ret = new ArrayList<String>();
 //                ret.add(jsob.toString());
 //                response = new MessageResponse(messageId, ret);
@@ -50,6 +51,7 @@ public class ResponsorHost1 extends Messager implements Runnable {
             } else if (tags.contains(Parameter.REQUEST_TAG_STUDENT)) {
                 // 添加学生信息
                 JSONObject jsob = Servlet.addStudentInfo(jsonObject);
+                log("story:"+jsob.toString());
 //                List<String> ret = new ArrayList<String>();
 //                ret.add(jsob.toString());
 //                response = new MessageResponse(messageId, ret);

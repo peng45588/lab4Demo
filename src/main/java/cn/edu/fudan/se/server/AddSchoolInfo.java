@@ -42,7 +42,7 @@ public class AddSchoolInfo extends ActionSupport implements ServletResponseAware
                     if (!invoker.getPth().isPrint())
                         Thread.sleep(1000);
                 }
-
+                invoker.stop();
 //                while (!invoker.getPth().isPrint()){//未打印:
 //
 //                }
